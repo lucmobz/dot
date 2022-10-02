@@ -1,19 +1,25 @@
 " This file (or .exrc for ed/ex/vi only options) handles vim config
+
 " To apply changes without leaving vim do
 " :w (write file to disk)
 " :so % (source the current file)
-" current session options will remain though
 
-" Tips
-" If read-only by accident do
-" :w !sudo tee %
-" to send the write to a sudo session of tee that writes in the current file
+" Disable vi compatibility
+set nocompatible
 
-" Colorscheme (this clears all highlights! Leave here)
-:colo darktango
+syntax enable
+filetype plugin on
+
+" Add the current subdirectories to navigagte a project
+set path+=**
+set wildmenu
+
+" Setup custom colors (clears highlight settings)
+if filereadable(expand("~/.vim/colors/darktango.vim"))
+  :colo darktango
+endif
 
 " Config
-set nocompatible
 set autowrite
 set icon
 set ttyfast
@@ -53,4 +59,6 @@ vnoremap <c-j> :m '>+1<cr>==gv
 vnoremap <c-k> :m '<-2<cr>==gv
 
 " Keybind for clang-format
-map cf :% !clang-format --style=Google %<cr>
+if executable("clang-format")
+  map cf :% !clang-format --style=Google %<cr>
+endif
